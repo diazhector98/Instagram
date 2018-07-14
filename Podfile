@@ -9,6 +9,8 @@ target 'Instagram' do
 pod 'Parse'
 pod 'DateTools'
 pod 'MBProgressHUD'
+pod 'ImageFilters', :git => 'https://github.com/jameswomack/iOS-Image-Filters.git'
+
 
 
 

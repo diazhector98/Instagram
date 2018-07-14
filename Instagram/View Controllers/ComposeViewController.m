@@ -10,6 +10,7 @@
 #import "Post.h"
 #import "MBProgressHUD.h"
 #import <CoreLocation/CoreLocation.h>
+#import <ImageFilters/ImageFilter.h>
 
 @interface ComposeViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, MKMapViewDelegate>
 
@@ -209,18 +210,17 @@
             
             NSLog(@"%@", error.localizedDescription);
             
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
             
         } else {
             
             NSLog(@"Image uploaded successfully!");
             
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
             
             [self dismissViewControllerAnimated:YES completion:nil];
             
         }
-        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+
     }];
    
 }
@@ -230,14 +230,60 @@
 
 
 -(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-        
+    
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
     
-    self.photoImageView.image = editedImage;
+    self.image = editedImage;
     
     [self dismissViewControllerAnimated:YES completion:nil];
 
 }
+
+- (IBAction)selectedFilter:(id)sender {
+    
+    UISegmentedControl *segmentedControl = (UISegmentedControl *) sender;
+    
+    NSInteger index = segmentedControl.selectedSegmentIndex;
+    
+    if(index == 0) {
+        
+        self.photoImageView.image = self.image;
+        
+        
+    } else if(index == 1) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            self.photoImageView.image = [self.image blackAndWhite];
+            
+            
+        });
+        
+    } else if(index == 2) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            self.photoImageView.image = [self.image blueMood];
+            
+            
+        });
+        
+    } else if(index == 3) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            self.photoImageView.image = [self.image sepia];
+            
+            
+            
+        });
+        
+    }
+    
+    
+    
+}
+
 
 - (IBAction)didPressCancel:(id)sender {
     

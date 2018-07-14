@@ -23,5 +23,7 @@
 @property (assign, nonatomic) double latitude;
 @property (assign, nonatomic) double longitude;
 
+@property (strong, nonatomic) UIImage *image;
+
 
 @end

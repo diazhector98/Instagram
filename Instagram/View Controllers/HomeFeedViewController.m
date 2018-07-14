@@ -12,9 +12,11 @@
 #import "Post.h"
 #import "DetailViewController.h"
 #import "DateTools.h"
+#import "Story.h"
+#import "StoriesViewController.h"
 
 
-@interface HomeFeedViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface HomeFeedViewController () <UIImagePickerControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @end
 
@@ -38,6 +40,8 @@
 
     [self getPostsFromParse];
     
+    [self getStoriesFromParse];
+    
 }
 
 -(void) getPostsFromParse {
@@ -46,7 +50,7 @@
     PFQuery *query = [PFQuery queryWithClassName:@"Post"];
     
     [query orderByDescending:@"createdAt"];
-    
+    [query includeKey:@"author"];
     query.limit = 20;
     
     // fetch data asynchronously
@@ -71,8 +75,167 @@
         }
     }];
     
+}
+
+-(void) getStoriesFromParse {
+    
+    // construct query
+    PFQuery *query = [PFQuery queryWithClassName:@"Story"];
+    
+    [query orderByDescending:@"createdAt"];
+    
+    [query includeKey:@"author"];
+
+    query.limit = 20;
+    
+    // fetch data asynchronously
+    [query findObjectsInBackgroundWithBlock:^(NSArray *stories, NSError *error) {
+        
+        if (stories != nil) {
+            // do something with the array of object returned by the call
+            
+            self.stories = stories;
+            
+            
+        } else {
+            
+            NSLog(@"%@", error.localizedDescription);
+            
+            [self.refreshControl endRefreshing];
+            
+            
+        }
+    }];
+    
     
 }
+
+
+- (IBAction)didTapGlobalStory:(id)sender {
+    
+    NSLog(@"Global story tapped");
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Global Story" message:@"Choose Action" preferredStyle: UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *addAction = [UIAlertAction actionWithTitle:@"Add" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        [self selectImageForStories];
+    
+    }];
+    
+    UIAlertAction *viewAction = [UIAlertAction actionWithTitle:@"View" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        [self performSegueWithIdentifier:@"storiesSegue" sender:self];
+        
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style: UIAlertActionStyleDefault handler: nil];
+    
+    [alert addAction: addAction];
+    
+    [alert addAction:viewAction];
+    
+    [alert addAction:cancelAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+
+    
+    
+}
+
+-(void) selectImageForStories {
+    
+    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    
+    imagePickerVC.delegate = self;
+    
+    imagePickerVC.allowsEditing = YES;
+    
+    imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Select Source" message:@"From where do you want your image?" preferredStyle: UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *galleryAction = [UIAlertAction actionWithTitle:@"Gallery" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        
+        [self presentViewController:imagePickerVC animated:YES completion:nil];
+        
+        
+    }];
+    
+    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"Camera" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
+        
+        imagePickerVC.cameraViewTransform = CGAffineTransformMakeScale(1.0, 1.03);
+        
+        [self presentViewController:imagePickerVC animated:YES completion:nil];
+        
+        
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        
+    }];
+    
+    [alert addAction: galleryAction];
+    
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        
+        [alert addAction:cameraAction];
+        
+        [alert addAction:cancelAction];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    } else {
+        
+        [self presentViewController:imagePickerVC animated:YES completion:nil];
+        
+    }
+    
+    
+}
+
+
+-(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    
+    NSLog(@"Finished picking picture");
+    
+    UIImage *editedImage = info[UIImagePickerControllerEditedImage];
+    
+    [self addStoryToParse:editedImage];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+    
+}
+
+-(void) addStoryToParse: (UIImage *) image {
+    
+    [Story postStory:image withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
+        
+        
+        if(error != nil) {
+            
+            NSLog(@"Error uploading: %@", error.description);
+            
+        } else {
+            
+            NSLog(@"Story uploaded successfully");
+            
+        }
+        
+        
+        
+    }];
+    
+}
+
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -97,6 +260,8 @@
 
     Post *post = self.posts[indexPath.row];
     
+//    Change images (post and profile picture)
+    
     PFFile *imageFile = post.image;
     
     [imageFile getDataInBackgroundWithBlock:^(NSData * _Nullable data, NSError * _Nullable error) {
@@ -108,6 +273,27 @@
         }
         
     }];
+    
+    PFUser *user = post.author;
+    
+    PFFile *profileImageFile = [user valueForKey:@"profilePicture"];
+    
+    //    Profile Image
+    
+    [profileImageFile getDataInBackgroundWithBlock:^(NSData * _Nullable data, NSError * _Nullable error) {
+        
+        if(data) {
+            
+            NSLog(@"Data recieved for image");
+            
+            cell.profileImageView.image = [UIImage imageWithData:data];
+            
+        }
+        
+    }];
+    
+    
+    
     
     //    Change labels
     
@@ -122,9 +308,7 @@
     }
     
     if(post.date) {
-        
-        NSString *dateString = [post.date descriptionWithLocale:[NSLocale currentLocale]];
-        
+                
         cell.timestampLabel.text = post.date.shortTimeAgoSinceNow;
         
     }
@@ -136,6 +320,15 @@
     }
         
     cell.post = post;
+    
+    [cell.locationLabel sizeToFit];
+    [cell.captionLabel sizeToFit];
+    [cell.timestampLabel sizeToFit];
+    [cell.usernameLabel sizeToFit];
+    
+    cell.profileImageView.layer.masksToBounds = YES;
+    
+    cell.profileImageView.layer.cornerRadius = cell.profileImageView.frame.size.width / 2;
     
     return cell;
     
@@ -170,6 +363,14 @@
         Post *post = postCell.post;
                 
         viewController.post = post;
+        
+    } else if([segue.identifier isEqualToString:@"storiesSegue"]){
+        
+        StoriesViewController *viewController = [segue destinationViewController];
+        
+        viewController.stories = self.stories;
+        
+        NSLog(@"Stories!!");
         
     }
 }

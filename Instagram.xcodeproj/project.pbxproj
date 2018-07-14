@@ -26,6 +26,8 @@
 		D67266C420F7083000F8E043 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = D67266C320F7083000F8E043 /* User.m */; };
 		D67266EC20F80C5700F8E043 /* YelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D67266EB20F80C5700F8E043 /* YelpManager.m */; };
 		D67266F120F86CCE00F8E043 /* MapsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D67266F020F86CCE00F8E043 /* MapsViewController.m */; };
+		D67266F420F9168000F8E043 /* Story.m in Sources */ = {isa = PBXBuildFile; fileRef = D67266F320F9168000F8E043 /* Story.m */; };
+		D67266FA20F96AA800F8E043 /* StoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D67266F920F96AA800F8E043 /* StoriesViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +67,10 @@
 		D67266EB20F80C5700F8E043 /* YelpManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YelpManager.m; sourceTree = "<group>"; };
 		D67266EF20F86CCE00F8E043 /* MapsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapsViewController.h; sourceTree = "<group>"; };
 		D67266F020F86CCE00F8E043 /* MapsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapsViewController.m; sourceTree = "<group>"; };
+		D67266F220F9168000F8E043 /* Story.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Story.h; sourceTree = "<group>"; };
+		D67266F320F9168000F8E043 /* Story.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Story.m; sourceTree = "<group>"; };
+		D67266F820F96AA800F8E043 /* StoriesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoriesViewController.h; sourceTree = "<group>"; };
+		D67266F920F96AA800F8E043 /* StoriesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StoriesViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +138,8 @@
 				D64BA9A920F4329C00BFBE3E /* PostCell.m */,
 				D64BA9A520F42C7900BFBE3E /* Post.h */,
 				D64BA9A620F42C7900BFBE3E /* Post.m */,
+				D67266F220F9168000F8E043 /* Story.h */,
+				D67266F320F9168000F8E043 /* Story.m */,
 				D67266C220F7083000F8E043 /* User.h */,
 				D67266C320F7083000F8E043 /* User.m */,
 				D64BA98C20F4021900BFBE3E /* Assets.xcassets */,
@@ -157,6 +165,8 @@
 				D64BA9A320F41F2F00BFBE3E /* ComposeViewController.m */,
 				D67266EF20F86CCE00F8E043 /* MapsViewController.h */,
 				D67266F020F86CCE00F8E043 /* MapsViewController.m */,
+				D67266F820F96AA800F8E043 /* StoriesViewController.h */,
+				D67266F920F96AA800F8E043 /* StoriesViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -246,11 +256,23 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Instagram/Pods-Instagram-resources.sh",
 				"${PODS_ROOT}/DateTools/DateTools/DateTools/DateTools.bundle",
+				"${PODS_ROOT}/ImageFilters/ImageFilters/Images/crossprocess.png",
+				"${PODS_ROOT}/ImageFilters/ImageFilters/Images/crossprocess@2x.png",
+				"${PODS_ROOT}/ImageFilters/ImageFilters/Images/magichour.png",
+				"${PODS_ROOT}/ImageFilters/ImageFilters/Images/magichour@2x.png",
+				"${PODS_ROOT}/ImageFilters/ImageFilters/Images/toycamera.png",
+				"${PODS_ROOT}/ImageFilters/ImageFilters/Images/toycamera@2x.png",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Parse/Parse.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DateTools.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/crossprocess.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/crossprocess@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/magichour.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/magichour@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/toycamera.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/toycamera@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Parse.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -286,12 +308,14 @@
 				D64BA98820F4021800BFBE3E /* ViewController.m in Sources */,
 				D67266C120F703EA00F8E043 /* EditProfileViewController.m in Sources */,
 				D67266BE20F6BE7500F8E043 /* PictureCollectionViewCell.m in Sources */,
+				D67266F420F9168000F8E043 /* Story.m in Sources */,
 				D67266BB20F6BD8F00F8E043 /* ProfileViewController.m in Sources */,
 				D64BA9A720F42C7900BFBE3E /* Post.m in Sources */,
 				D64BA99320F4021900BFBE3E /* main.m in Sources */,
 				D64BA9AD20F480C000BFBE3E /* DetailViewController.m in Sources */,
 				D64BA98520F4021800BFBE3E /* AppDelegate.m in Sources */,
 				D67266C420F7083000F8E043 /* User.m in Sources */,
+				D67266FA20F96AA800F8E043 /* StoriesViewController.m in Sources */,
 				D64BA9AA20F4329C00BFBE3E /* PostCell.m in Sources */,
 				D64BA9A420F41F2F00BFBE3E /* ComposeViewController.m in Sources */,
 				D67266F120F86CCE00F8E043 /* MapsViewController.m in Sources */,

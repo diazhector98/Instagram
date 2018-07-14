@@ -93,10 +93,22 @@ EOM
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "${PODS_ROOT}/DateTools/DateTools/DateTools/DateTools.bundle"
+  install_resource "${PODS_ROOT}/ImageFilters/ImageFilters/Images/crossprocess.png"
+  install_resource "${PODS_ROOT}/ImageFilters/ImageFilters/Images/crossprocess@2x.png"
+  install_resource "${PODS_ROOT}/ImageFilters/ImageFilters/Images/magichour.png"
+  install_resource "${PODS_ROOT}/ImageFilters/ImageFilters/Images/magichour@2x.png"
+  install_resource "${PODS_ROOT}/ImageFilters/ImageFilters/Images/toycamera.png"
+  install_resource "${PODS_ROOT}/ImageFilters/ImageFilters/Images/toycamera@2x.png"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Parse/Parse.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "${PODS_ROOT}/DateTools/DateTools/DateTools/DateTools.bundle"
+  install_resource "${PODS_ROOT}/ImageFilters/ImageFilters/Images/crossprocess.png"
+  install_resource "${PODS_ROOT}/ImageFilters/ImageFilters/Images/crossprocess@2x.png"
+  install_resource "${PODS_ROOT}/ImageFilters/ImageFilters/Images/magichour.png"
+  install_resource "${PODS_ROOT}/ImageFilters/ImageFilters/Images/magichour@2x.png"
+  install_resource "${PODS_ROOT}/ImageFilters/ImageFilters/Images/toycamera.png"
+  install_resource "${PODS_ROOT}/ImageFilters/ImageFilters/Images/toycamera@2x.png"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Parse/Parse.bundle"
 fi
 
