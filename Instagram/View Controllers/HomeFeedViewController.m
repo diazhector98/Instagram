@@ -140,7 +140,6 @@
     [self presentViewController:alert animated:YES completion:nil];
 
     
-    
 }
 
 -(void) selectImageForStories {
@@ -226,6 +225,8 @@
             
             NSLog(@"Story uploaded successfully");
             
+            [self getStoriesFromParse];
+
         }
         
         

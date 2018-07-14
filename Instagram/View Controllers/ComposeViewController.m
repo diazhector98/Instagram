@@ -235,6 +235,8 @@
     
     self.image = editedImage;
     
+    self.photoImageView.image = self.image;
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 
 }

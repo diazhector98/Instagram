@@ -12,9 +12,12 @@
 
 @property (strong, nonatomic) NSArray *stories;
 @property (nonatomic) int currentStory;
+@property (nonatomic) double secondsInStory;
+@property (strong, nonatomic) NSTimer *timer;
 
 @property (weak, nonatomic) IBOutlet UIImageView *storyImageView;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressBar;
+
 
 
 @end

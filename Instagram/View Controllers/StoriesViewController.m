@@ -19,6 +19,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.timer = [NSTimer scheduledTimerWithTimeInterval: 0.01 target:self selector:@selector(storyTimer) userInfo:nil repeats:YES];
     [self setupStories];
     
 }
@@ -34,9 +35,45 @@
         
     } else {
         
-        self.currentStory = 0;
+        [self setImage:0];
+
+    }
+    
+}
+
+-(void) storyTimer {
+    
+    self.secondsInStory += 0.01;
+    
+    double totalSeconds = 4.0;
+    
+    if(self.secondsInStory >= totalSeconds) {
         
-        Story *firstStory = self.stories[0];
+        self.currentStory += 1;
+        
+        [self setImage:self.currentStory];
+        
+        self.secondsInStory = 0;
+        
+    }
+    
+    [self.progressBar setProgress: self.secondsInStory / totalSeconds];
+    
+}
+
+-(void) setImage: (int) index {
+    
+    if(index == self.stories.count) {
+        
+        NSLog(@"end of stories");
+        
+        [self.timer invalidate];
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+    } else {
+        
+        Story *firstStory = self.stories[index];
         
         PFFile *imageFile = firstStory.image;
         
@@ -55,44 +92,23 @@
             }
             
         }];
-
+        
+        
     }
+    
     
 }
 
 - (IBAction)didPressImage:(id)sender {
     
     
-    if(self.currentStory == self.stories.count - 1) {
-        
-        [self dismissViewControllerAnimated:YES completion:nil];
-        
-    } else {
-        
-        self.currentStory += 1;
-        
-        Story *firstStory = self.stories[self.currentStory];
-        
-        PFFile *imageFile = firstStory.image;
-        
-        [imageFile getDataInBackgroundWithBlock:^(NSData * _Nullable data, NSError * _Nullable error) {
-            
-            if(data) {
-                
-                UIImage *image = [UIImage imageWithData:data];
-                
-                self.storyImageView.image = image;
-                
-            } else {
-                
-                NSLog(@"Error converting image");
-                
-            }
-            
-        }];
-        
-        
-    }
+    self.currentStory += 1;
+    
+    NSLog(@"%i", self.currentStory);
+    
+    self.secondsInStory = 0;
+    
+    [self setImage:self.currentStory];
     
 }
 
